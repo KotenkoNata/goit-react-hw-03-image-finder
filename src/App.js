@@ -5,10 +5,11 @@ import ImageGallery from './components/ImageGallery';
 import Button from './components/Button';
 import Modal from './components/Modal';
 
-import pixabayApi, { fetchImages } from './services/pixabayApi';
+import { fetchImages } from './services/pixabayApi';
 
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import Container from './components/Container';
 
 class App extends Component {
   state = {
@@ -24,7 +25,7 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.query !== this.state.query) {
-      this.fetchImages();
+      this.getImages();
     }
   }
 
@@ -34,11 +35,12 @@ class App extends Component {
       query: searchQuery,
       page: 1,
       showModal: false,
+      selectedImage: '',
       error: null,
     });
   };
 
-  fetchImages = () => {
+  getImages = () => {
     const { page, query } = this.state;
 
     const options = {
@@ -48,8 +50,7 @@ class App extends Component {
 
     this.setState({ isLoading: true });
 
-    pixabayApi
-      .fetchImages(options)
+    fetchImages(options)
       .then(images => {
         this.setState(prevState => ({
           images: [...prevState.images, ...images],
@@ -80,28 +81,34 @@ class App extends Component {
     const { images, isLoading, error, showModal, selectedImage } = this.state;
     const shouldRenderLoadMoreButton = images.length > 0 && !isLoading;
     return (
-      <>
+      <div className={'App'}>
         <SearchBar onSubmit={this.onChangeQuery} />
-        <ImageGallery>
-          {this.state.images.map(image => (
-            <ImageGalleryItem key={image.id} image={image} />
-          ))}
-        </ImageGallery>
-        {error && <h1>Error</h1>}
-        {isLoading && (
-          <Loader
-            type="TailSpin"
-            color="#00BFFF"
-            height={80}
-            width={80}
-            className="loader"
-          />
-        )}
-        {shouldRenderLoadMoreButton && <Button onLoadMore={this.fetchImages} />}
+        <Container>
+          <ImageGallery>
+            {this.state.images.map(image => (
+              <ImageGalleryItem
+                key={image.id}
+                image={image}
+                setLargeImage={this.setLargeImage}
+              />
+            ))}
+          </ImageGallery>
+          {error && <h1>Error</h1>}
+          {isLoading && (
+            <Loader
+              type="ThreeDots"
+              color="#303f9f"
+              height={80}
+              width={80}
+              className="loader"
+            />
+          )}
+        </Container>
+        {shouldRenderLoadMoreButton && <Button onLoadMore={this.getImages} />}
         {showModal && (
-          <Modal largeImgUrl={selectedImage} onClose={this.toggleModal} />
+          <Modal largeImageUrl={selectedImage} onClose={this.toggleModal} />
         )}
-      </>
+      </div>
     );
   }
 }

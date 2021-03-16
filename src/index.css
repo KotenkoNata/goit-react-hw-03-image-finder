@@ -35,3 +35,11 @@ img {
   grid-gap: 16px;
   padding-bottom: 24px;
 }
+
+/* 
+* Styles for the Loader
+*/
+.loader {
+  margin: 20px auto;
+  text-align: center;
+}

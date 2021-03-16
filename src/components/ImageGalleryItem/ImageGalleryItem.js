@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 
 import styles from './ImageGalleryItem.module.css';
 
-const ImageGalleryItem = ({ image, setLargeImg }) => {
+const ImageGalleryItem = ({ image, setLargeImage }) => {
   return (
-    <li className={styles.ImageGalleryItem} onClick={() => setLargeImg(image)}>
+    <li
+      className={styles.ImageGalleryItem}
+      onClick={() => setLargeImage(image)}
+    >
       <img
         src={image.webformatURL}
         alt={image.tags}
@@ -20,7 +23,7 @@ ImageGalleryItem.propTypes = {
     webformatURL: PropTypes.string.isRequired,
     tags: PropTypes.string.isRequired,
   }).isRequired,
-  setLargeImg: PropTypes.func.isRequired,
+  setLargeImage: PropTypes.func.isRequired,
 };
 
 export default ImageGalleryItem;

@@ -9,17 +9,14 @@ const modalRoot = document.querySelector('#modal-root');
 export default class Modal extends Component {
   static propTypes = {
     onClose: PropTypes.func.isRequired,
-    largeImgUrl: PropTypes.string.isRequired,
+    largeImageUrl: PropTypes.string.isRequired,
   };
 
   componentDidMount() {
-    console.log('Modal componentDidMount');
-
     window.addEventListener('keydown', this.handleKeyDown);
   }
   //clean Listner
   componentWillUnmount() {
-    console.log('Modal componentWillUnmount');
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
@@ -36,10 +33,11 @@ export default class Modal extends Component {
   };
 
   render() {
+    const img = this.props.largeImageUrl;
     return createPortal(
       <div className={styles.Overlay} onClick={this.handleBackdropClick}>
         <div className={styles.Modal}>
-          <img src={this.props.largeImageURL} alt="Gallery" />
+          <img src={img} alt={'Gallery'} />
         </div>
       </div>,
       modalRoot,

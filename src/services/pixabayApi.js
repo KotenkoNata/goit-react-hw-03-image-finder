@@ -13,4 +13,4 @@ const fetchImages = ({ query = '', page = 1, per_page = 12 }) => {
     .then(data => data.hits);
 };
 
-export default { fetchImages };
+export { fetchImages };
